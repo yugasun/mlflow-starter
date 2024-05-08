@@ -3,38 +3,30 @@ endpoints:
     endpoint_type: llm/v1/completions
     model:
       provider: openai
-      name: linkai-3.5
-      config:
-        openai_api_key: $OPENAI_API_KEY
-        # openai_api_base: $OPENAI_API_BASE
-        openai_api_base: https://api.link-ai.chat/v1
-
-  - name: chat
-    endpoint_type: llm/v1/chat
-    model:
-      provider: openai
       name: gpt-4
       config:
         openai_api_key: $OPENAI_API_KEY
-        # openai_api_base: $OPENAI_API_BASE
-        openai_api_base: https://api.link-ai.chat/v1
+  
+  # - name: chat
+  #   endpoint_type: llm/v1/chat
+  #   model:
+  #     provider: openai
+  #     name: gpt-4
+  #     config:
+  #       openai_api_key: $OPENAI_API_KEY
 
-  - name: chat_3.5
-    endpoint_type: llm/v1/chat
-    model:
-      provider: openai
-      name: gpt-3.5-turbo
-      config:
-        openai_api_key: $OPENAI_API_KEY
-        # openai_api_base: $OPENAI_API_BASE
-        openai_api_base: https://api.link-ai.chat/v1
+  # - name: chat_3.5
+  #   endpoint_type: llm/v1/chat
+  #   model:
+  #     provider: openai
+  #     name: gpt-3.5-turbo
+  #     config:
+  #       openai_api_key: $OPENAI_API_KEY
 
-  - name: embeddings
-    endpoint_type: llm/v1/embeddings
-    model:
-      provider: openai
-      name: text-embedding-ada-002
-      config:
-        openai_api_key: $OPENAI_API_KEY
-        # openai_api_base: $OPENAI_API_BASE
-        openai_api_base: https://api.link-ai.chat/v1
+  # - name: embeddings
+  #   endpoint_type: llm/v1/embeddings
+  #   model:
+  #     provider: openai
+  #     name: text-embedding-ada-002
+  #     config:
+  #       openai_api_key: $OPENAI_API_KEY

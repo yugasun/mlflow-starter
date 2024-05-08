@@ -7,6 +7,16 @@ Mlflow starter is a project that demonstrates how to use mlflow to track and man
 - Docker
 - Python 3.10+
 
+### Configuration
+
+Copy the `.env.example` file to `.env` and update the values as needed.
+
+```bash
+cp .env.example .env
+```
+
+> If you want to use openai api, you need to set the `OPENAI_API_KEY` in the `.env` file.
+
 ### Setup environment
 
 ```bash
@@ -29,4 +39,10 @@ pip install -r requirements.txt
 
 ```bash
 python src/quickstart.py
+```
+
+### Server LLM
+
+```bash
+./src/llm/run.sh
 ```

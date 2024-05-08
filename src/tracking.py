@@ -1,27 +1,26 @@
 import mlflow
 from mlflow.models import infer_signature
-
 import pandas as pd
 from sklearn import datasets
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
-
-# dotenv is used to load environment variables from a .env file
 from config.setup_env import setup_env
 
-# setup environment variables
-MLFLOW_TRACKING_URI = setup_env()
+# Load environment variables from the .env file
+# Set up environment variables
+MLFLOW_TRACKING_URI, _ = setup_env()
+print(MLFLOW_TRACKING_URI)
 
 # Load the Iris dataset
 X, y = datasets.load_iris(return_X_y=True)
 
-# Split the data into training and test sets. (0.75, 0.25) split.
+# Split the dataset into training and testing sets (80% training, 20% testing)
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42
 )
 
-# Define the model hyperparameters
+# Define the hyperparameters of the model
 params = {
     "solver": "lbfgs",
     "max_iter": 1000,
@@ -33,18 +32,19 @@ params = {
 lr = LogisticRegression(**params)
 lr.fit(X_train, y_train)
 
-# Predict on the test set
+# Make predictions on the test set
 y_pred = lr.predict(X_test)
 
 # Calculate metrics
 accuracy = accuracy_score(y_test, y_pred)
 
+# Print the accuracy
 # print(accuracy)
 
-# Set tracking server uri for Logging, this is the MLflow Tracking Server
+# Set the tracking server URI for recording, which is the MLflow tracking server
 mlflow.set_tracking_uri(uri=MLFLOW_TRACKING_URI)
 
-# Create a new MLflow Experiment
+# Create a new MLflow experiment
 mlflow.set_experiment("MLflow Quickstart1")
 
 mlflow.autolog()
@@ -54,13 +54,13 @@ with mlflow.start_run():
     # Log the hyperparameters
     mlflow.log_params(params)
 
-    # Log the Loss metric
+    # Log the accuracy metric
     mlflow.log_metric("accuracy", accuracy)
 
-    # Set a tag that we can use to remind ourselves that this run was far
+    # Set a tag to remind us what this run is for
     mlflow.set_tag("Training Info", "Basic LR model for iris dataset")
 
-    # Infer the model signature
+    # Infer the signature of the model
     signature = infer_signature(X_train, lr.predict(X_train))
 
     # Log the model
@@ -72,15 +72,19 @@ with mlflow.start_run():
         registered_model_name="tracking-quickstart",
     )
 
-    # Load the model back for predictions as a generic Python Function model
+    # Load the model as a generic Python function model for prediction
     loaded_model = mlflow.pyfunc.load_model(model_info.model_uri)
 
+    # Use the loaded model for prediction
     predictions = loaded_model.predict(X_test)
 
+    # Get the feature names of the Iris dataset
     iris_feature_names = datasets.load_iris().feature_names
 
+    # Create a DataFrame to store the test data and predictions
     result = pd.DataFrame(X_test, columns=iris_feature_names)
     result["actual_class"] = y_test
     result["predicted_class"] = predictions
 
+    # Display the first 4 rows of the result DataFrame
     result[:4]
